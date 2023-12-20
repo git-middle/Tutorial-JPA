@@ -20,6 +20,7 @@ public class CountryController {
 
     @GetMapping("/list")
     public String getList(Model model) {
+
         model.addAttribute("countrylist",service.getCountryList());
 
         return "country/list";
@@ -44,8 +45,13 @@ public class CountryController {
         return "redirect:/country/list";
     }
 
-    @GetMapping("/delete")
-    public String deleteCountryForm(Model model) {
+    @GetMapping(value={"/delete","/delete/{code}/"})
+    public String getDeleteCountry(@PathVariable(name="code",required=false)String code,Model model) {
+
+        Country deletecountry = code != null?service.getCountry(code):new Country();
+
+        model.addAttribute("code",code);
+
         return"country/delete";
     }
 
@@ -56,5 +62,6 @@ public class CountryController {
 
         return"redirect:/country/list";
     }
+
 
 }
